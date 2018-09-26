@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +37,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     private Button btnSubmit;
 
+    private ProgressBar progressBar;
+
     private Uri imageUri;
 
 
@@ -59,6 +62,9 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         imgLetter = findViewById(R.id.imgLetter);
 
         btnSubmit = findViewById(R.id.btnSubmit);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         btnSubmit.setOnClickListener(this);
         imgLetter.setOnClickListener(this);
@@ -111,6 +117,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
     private void uploadAcceptanceLetter() {
 
+        progressBar.setVisibility(View.VISIBLE);
+
         StorageReference reference = FirebaseStorage.getInstance().getReference();
 
         reference.child(Constants.DOCUMENTS).putFile(imageUri)
@@ -136,6 +144,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
+                        progressBar.setVisibility(View.GONE);
                         Log.d("Check","Exception " + e.getMessage());
                         Toast.makeText(DetailsActivity.this,"Could not upload, please try again",Toast.LENGTH_LONG)
                                 .show();
@@ -154,6 +163,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         reference.child(grNo)
                 .setValue(student);
+
+        progressBar.setVisibility(View.GONE);
 
         Snackbar.make(findViewById(R.id.root_layout),"Successfully Uploaded",Snackbar.LENGTH_SHORT)
                 .show();

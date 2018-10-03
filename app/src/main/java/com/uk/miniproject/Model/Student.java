@@ -1,4 +1,4 @@
-package com.uk.miniproject;
+package com.uk.miniproject.Model;
 
 /**
  * Created by usman on 25-09-2018.

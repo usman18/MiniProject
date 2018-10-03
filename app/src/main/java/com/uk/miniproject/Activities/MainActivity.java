@@ -1,4 +1,4 @@
-package com.uk.miniproject;
+package com.uk.miniproject.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.uk.miniproject.R;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -143,8 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateUI(FirebaseUser user) {
 
+
+        //Todo : Change the activity name to which this intent is heading
         if (user != null) {
-            startActivity(new Intent(MainActivity.this,DetailsActivity.class));
+            startActivity(new Intent(MainActivity.this,StudentListActivity.class));
             finish();
         }
 

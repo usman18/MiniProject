@@ -1,4 +1,4 @@
-package com.uk.miniproject;
+package com.uk.miniproject.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +24,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.uk.miniproject.Constants;
+import com.uk.miniproject.R;
+import com.uk.miniproject.Model.Student;
 
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
 

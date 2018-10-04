@@ -13,6 +13,8 @@ public class Starter extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //enabling offline persistence, such a saviour
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     }

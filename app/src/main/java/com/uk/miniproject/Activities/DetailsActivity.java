@@ -2,10 +2,10 @@ package com.uk.miniproject.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,8 +15,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -25,8 +28,8 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.uk.miniproject.Constants;
-import com.uk.miniproject.R;
 import com.uk.miniproject.Model.Student;
+import com.uk.miniproject.R;
 
 public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -122,37 +125,66 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
         progressBar.setVisibility(View.VISIBLE);
 
-        StorageReference reference = FirebaseStorage.getInstance().getReference();
 
-        reference.child(Constants.DOCUMENTS).putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        final StorageReference reference = FirebaseStorage.getInstance().getReference(Constants.DOCUMENTS)
+                .child(etGrNumber.getText().toString());
 
-                        String imageUrl = String.valueOf(taskSnapshot.getUploadSessionUri());
+        UploadTask task = reference.putFile(imageUri);
 
-                        Student student = new Student();
-                        student.setName(etName.getText().toString());
-                        student.setGrNumber(etGrNumber.getText().toString());
-                        student.setUniversity(etUniversity.getText().toString());
-                        student.setExamName(etExamName.getText().toString());
-                        student.setExamScore(etExamScore.getText().toString());
-                        student.setAcceptanceLetterUrl(imageUrl);
+        task.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressBar.setVisibility(View.GONE);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBar.setVisibility(View.GONE);
+                Log.d("Check","Exception " + e.getMessage());
+                Toast.makeText(DetailsActivity.this,"Could not upload, please try again",Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
 
-                        saveToDb(student);
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+        task = reference.putFile(imageUri);
 
-                        progressBar.setVisibility(View.GONE);
-                        Log.d("Check","Exception " + e.getMessage());
-                        Toast.makeText(DetailsActivity.this,"Could not upload, please try again",Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
+        Task<Uri> uriTask = task.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful())
+                    throw  task.getException();
+
+                return reference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+
+                if (task.isSuccessful()) {
+
+                    progressBar.setVisibility(View.GONE);
+                    Uri uri = task.getResult();
+                    String imageUrl = uri.toString();
+
+                    Student student = new Student();
+                    student.setName(etName.getText().toString());
+                    student.setGrNumber(etGrNumber.getText().toString());
+                    student.setUniversity(etUniversity.getText().toString());
+                    student.setExamName(etExamName.getText().toString());
+                    student.setExamScore(etExamScore.getText().toString());
+                    student.setAcceptanceLetterUrl(imageUrl);
+
+                    saveToDb(student);
+
+
+                }
+
+            }
+        });
+
+
+
 
 
     }

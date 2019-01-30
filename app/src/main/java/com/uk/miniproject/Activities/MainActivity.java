@@ -145,9 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateUI(FirebaseUser user) {
 
 
-        //Todo : Change the activity name to which this intent is heading
         if (user != null) {
-            startActivity(new Intent(MainActivity.this,StudentListActivity.class));
+            startActivity(new Intent(MainActivity.this,DetailsActivity.class));
             finish();
         }
 

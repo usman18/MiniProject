@@ -19,9 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,6 +49,7 @@ public class StudentListActivity extends AppCompatActivity {
     private Query query;
     private FirebaseRecyclerOptions<Student> recyclerOptions;
     private FirebaseRecyclerAdapter firebaseRecyclerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +89,16 @@ public class StudentListActivity extends AppCompatActivity {
             case R.id.export_to_csv:
                 exportToCSV();
                 return true;
+            case R.id.sign_out:
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
         }
         return false;
     }
 
     private void initialize() {
+
 
         students = new ArrayList<>();
         rvStudentList = findViewById(R.id.rvStudentList);
@@ -204,7 +212,7 @@ public class StudentListActivity extends AppCompatActivity {
 
     private void createCSV() {
 
-        String header = "Name,GrNumber,Exam Name,Exam Score,University";
+        String header = "Name,Email,GrNumber,Exam Name,Exam Score,University";
 
         File folder = new File(
                 Environment.getExternalStorageDirectory()
@@ -245,6 +253,8 @@ public class StudentListActivity extends AppCompatActivity {
                 fw.append(NEW_LINE);
                 fw.append(student.getName());
                 fw.append(COMMA);
+                fw.append(student.getEmail());
+                fw.append(COMMA);
                 fw.append(student.getGrNumber());
                 fw.append(COMMA);
                 fw.append(student.getExamName());
@@ -261,6 +271,8 @@ public class StudentListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        Toast.makeText(StudentListActivity.this,"CSV Created !",Toast.LENGTH_SHORT)
+                .show();
 
     }
 
@@ -277,6 +289,8 @@ public class StudentListActivity extends AppCompatActivity {
             tvName = itemView.findViewById(R.id.tvName);
             tvGrNumber = itemView.findViewById(R.id.tvGrNumber);
 
+            
+            
         }
     }
 

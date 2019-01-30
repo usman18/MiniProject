@@ -7,6 +7,7 @@ package com.uk.miniproject.Model;
 public class Student {
 
     private String name;
+    private String email;
     private String grNumber;
     private String university;
     private String examName;
@@ -56,7 +57,15 @@ public class Student {
     public String getAcceptanceLetterUrl() {
         return acceptanceLetterUrl;
     }
-
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public void setAcceptanceLetterUrl(String acceptanceLetterUrl) {
         this.acceptanceLetterUrl = acceptanceLetterUrl;
     }

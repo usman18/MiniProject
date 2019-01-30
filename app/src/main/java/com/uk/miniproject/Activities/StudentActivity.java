@@ -4,7 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,12 +32,15 @@ public class StudentActivity extends AppCompatActivity {
 
     private String grNumber;
 
+    private ActionBar actionBar;
+
     private TextView tvName;
+    private TextView tvEmail;
     private TextView tvGrNumber;
     private TextView tvExam;
     private TextView tvScore;
     private TextView tvUniversity;
-
+    
     private ImageView imgAcceptanceLetter;
     private ProgressBar progressBar;
 
@@ -79,7 +84,13 @@ public class StudentActivity extends AppCompatActivity {
 
     private void initialize() {
 
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+
         tvName = findViewById(R.id.tvName);
+        tvEmail = findViewById(R.id.tvEmail);
+        tvExam = findViewById(R.id.tvEmail);
         tvGrNumber = findViewById(R.id.tvGrNumber);
         tvExam = findViewById(R.id.tvExam);
         tvUniversity = findViewById(R.id.tvUniversity);
@@ -104,6 +115,7 @@ public class StudentActivity extends AppCompatActivity {
                 if (student != null) {
 
                     tvName.setText(student.getName());
+                    tvEmail.setText(student.getEmail());
                     tvGrNumber.setText(student.getGrNumber());
                     tvExam.setText(student.getExamName());
                     tvScore.setText(student.getExamScore());
@@ -142,5 +154,15 @@ public class StudentActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

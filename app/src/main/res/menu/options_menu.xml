@@ -5,4 +5,12 @@
         android:id="@+id/export_to_csv"
         android:title="Export To CSV"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/sign_out"
+        android:title="Sign Out"
+        app:showAsAction="never"
+        />
+
+
 </menu>

@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -148,7 +149,6 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
         task = reference.putFile(imageUri);
 
         Task<Uri> uriTask = task.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -168,9 +168,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     progressBar.setVisibility(View.GONE);
                     Uri uri = task.getResult();
                     String imageUrl = uri.toString();
-
+    
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    
                     Student student = new Student();
-                    student.setName(etName.getText().toString());
+                    student.setName(user.getDisplayName());
+                    student.setEmail(user.getEmail());
                     student.setGrNumber(etGrNumber.getText().toString());
                     student.setUniversity(etUniversity.getText().toString());
                     student.setExamName(etExamName.getText().toString());
@@ -211,8 +214,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             public void run() {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(DetailsActivity.this,MainActivity.class));
+                finish();
             }
         },2000);
+
 
     }
 
@@ -220,11 +225,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     private boolean IfNull() {
         boolean isNull = false;
 
-        if (TextUtils.isEmpty(etName.getText().toString())){
-            isNull = true;
-            etName.setError("Please enter name");
-        }
-
+       
         if (TextUtils.isEmpty(etGrNumber.getText().toString())) {
             isNull = true;
             etGrNumber.setError("Please enter GR Number");

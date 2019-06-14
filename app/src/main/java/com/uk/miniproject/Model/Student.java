@@ -9,11 +9,13 @@ public class Student {
     private String name;
     private String email;
     private String grNumber;
-    private String university;
+    private String year;
     private String examName;
     private String examScore;
+    private String university;
     private String acceptanceLetterUrl;
-
+    
+    
     public String getName() {
         return name;
     }
@@ -68,5 +70,13 @@ public class Student {
     
     public void setAcceptanceLetterUrl(String acceptanceLetterUrl) {
         this.acceptanceLetterUrl = acceptanceLetterUrl;
+    }
+    
+    public String getYear() {
+        return year;
+    }
+    
+    public void setYear(String year) {
+        this.year = year;
     }
 }

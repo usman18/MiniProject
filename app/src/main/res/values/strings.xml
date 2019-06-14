@@ -1,6 +1,21 @@
 <resources>
-    <string name="app_name">Mini Project</string>
-    
+        <string name="app_name">Mini Project</string>
+        <string name="enter_name_here">Enter name here</string>
+        <string name="enter_gr">Enter GR Number here</string>
+        <string name="enter_passing_year">Enter passing year</string>
+        <string name="enter_admitted_college_university_name">Enter admitted College/University name</string>
+        <string name="upload_acceptance_letter_by_tappping_the_image">Upload acceptance letter by tappping the image</string>
+        <string name="enter_exam_score_here">Enter Exam Score here</string>
+        <string name="submit">Submit</string>
+        <string-array name="exam_type">
+                <item>Select Exam</item>
+                <item>GATE</item>
+                <item>GRE</item>
+                <item>TOEFEL</item>
+                <item>UPSC</item>
+                <item>MPSC</item>
+                <item>Other</item>
+        </string-array>
 </resources>
 
 

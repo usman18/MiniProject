@@ -66,7 +66,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 	
 	private void initialize() {
 		
-		etUniversity = findViewById(R.id.etUniversity);
+		if (getSupportActionBar() != null)
+			getSupportActionBar().setTitle("Fill your details");
+		
+		etUniversity = findViewById(R.id.etCollegeName);
 		etGrNumber = findViewById(R.id.etGrNumber);
 		spExamType = findViewById(R.id.spExamName);
 		etExamScore = findViewById(R.id.etExamScore);
@@ -83,6 +86,10 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 				etName.setText(mUser.getDisplayName());
 			}
 			
+		} else {
+			Toast.makeText(DetailsActivity.this, "Error!", Toast.LENGTH_LONG)
+				.show();
+			return;
 		}
 		
 		
@@ -109,7 +116,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 				}
 				
 				break;
-			case R.id.imgLetter:
+			case R.id.imgAcceptanceLetter:
 				selectImage();
 				break;
 		}
@@ -189,6 +196,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 					
 					
 					Student student = new Student();
+					student.setUid(mAuth.getUid());
 					student.setName(etName.getText().toString());
 					student.setEmail(mAuth.getCurrentUser().getEmail());
 					student.setGrNumber(etGrNumber.getText().toString());
@@ -214,9 +222,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 		DatabaseReference reference
 			= FirebaseDatabase.getInstance().getReference(Constants.USERS);
 		
-		String email = student.getEmail();
-		
-		reference.child(email)
+		reference.child(mAuth.getCurrentUser().getUid())
 			.setValue(student);
 		
 		progressBar.setVisibility(View.INVISIBLE);
@@ -271,7 +277,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 					etYear.setError("Pleas enter year in yyyy format");
 				}
 				
-			}catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 				isNull = true;
 				etYear.setError("Please enter year in yyyy format");

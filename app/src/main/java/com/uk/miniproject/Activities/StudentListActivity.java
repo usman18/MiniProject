@@ -108,11 +108,9 @@ public class StudentListActivity extends AppCompatActivity {
                 .getReference(Constants.USERS)
                 .orderByChild("name");
 
-
         recyclerOptions = new FirebaseRecyclerOptions.Builder<Student>()
                 .setQuery(query,Student.class)
                 .build();
-
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Student,StudentViewHolder>(recyclerOptions) {
 
@@ -133,7 +131,7 @@ public class StudentListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(StudentListActivity.this,StudentActivity.class);
-                        intent.putExtra("GrNumber",model.getGrNumber());
+                        intent.putExtra("uid",model.getUid());
                         startActivity(intent);
 
                     }
@@ -212,7 +210,7 @@ public class StudentListActivity extends AppCompatActivity {
 
     private void createCSV() {
 
-        String header = "Name,Email,GrNumber,Exam Name,Exam Score,University";
+        String header = "Name,Email,GrNumber,Year,Exam Name,Exam Score,University";
 
         File folder = new File(
                 Environment.getExternalStorageDirectory()
@@ -256,6 +254,8 @@ public class StudentListActivity extends AppCompatActivity {
                 fw.append(student.getEmail());
                 fw.append(COMMA);
                 fw.append(student.getGrNumber());
+                fw.append(COMMA);
+                fw.append(student.getYear());
                 fw.append(COMMA);
                 fw.append(student.getExamName());
                 fw.append(COMMA);

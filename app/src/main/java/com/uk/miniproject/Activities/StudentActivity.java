@@ -30,13 +30,14 @@ import com.uk.miniproject.R;
 
 public class StudentActivity extends AppCompatActivity {
 	
-	private String grNumber;
+	private String uid;
 	
 	private ActionBar actionBar;
 	
 	private TextView tvName;
 	private TextView tvEmail;
 	private TextView tvGrNumber;
+	private TextView tvYear;
 	private TextView tvExam;
 	private TextView tvScore;
 	private TextView tvUniversity;
@@ -63,8 +64,8 @@ public class StudentActivity extends AppCompatActivity {
 		
 		if (bundle != null) {
 			
-			if (bundle.getString("GrNumber") != null)
-				grNumber = bundle.getString("GrNumber");
+			if (bundle.getString("uid") != null)
+				uid = bundle.getString("uid");
 			else
 				displayMsg();
 			
@@ -87,11 +88,13 @@ public class StudentActivity extends AppCompatActivity {
 		actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
+		actionBar.setTitle("Student Details");
 		
 		tvName = findViewById(R.id.tvName);
 		tvEmail = findViewById(R.id.tvEmail);
 		tvExam = findViewById(R.id.tvExam);
 		tvGrNumber = findViewById(R.id.tvGrNumber);
+		tvYear = findViewById(R.id.tvYear);
 		tvExam = findViewById(R.id.tvExam);
 		tvUniversity = findViewById(R.id.tvUniversity);
 		tvScore = findViewById(R.id.tvScore);
@@ -104,9 +107,9 @@ public class StudentActivity extends AppCompatActivity {
 	private void setDataToViews() {
 		
 		reference = FirebaseDatabase.getInstance().getReference(Constants.USERS)
-			.child(grNumber);
+			.child(uid);
 		
-		reference.addValueEventListener(new ValueEventListener() {
+		reference.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				
@@ -117,6 +120,7 @@ public class StudentActivity extends AppCompatActivity {
 					tvName.setText(student.getName());
 					tvEmail.setText(student.getEmail());
 					tvGrNumber.setText(student.getGrNumber());
+					tvYear.setText(student.getYear());
 					tvExam.setText(student.getExamName());
 					tvScore.setText(student.getExamScore());
 					tvUniversity.setText(student.getUniversity());

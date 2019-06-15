@@ -5,7 +5,8 @@ package com.uk.miniproject.Model;
  */
 
 public class Student {
-
+    
+    private String uid;
     private String name;
     private String email;
     private String grNumber;
@@ -78,5 +79,14 @@ public class Student {
     
     public void setYear(String year) {
         this.year = year;
+    }
+    
+    
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+    
+    public String getUid() {
+        return uid;
     }
 }

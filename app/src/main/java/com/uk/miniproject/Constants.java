@@ -9,6 +9,9 @@ public class Constants {
     //RealTime Database
     public static final String USERS = "Users";
     public static final String ADMINS = "Admins";
+    public static final String NAME = "name";
+    public static final String YEAR = "year";
+    
     
     //Storage
     public static final String DOCUMENTS = "Documents";

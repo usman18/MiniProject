@@ -7,6 +7,7 @@
         <string name="upload_acceptance_letter_by_tappping_the_image">Upload acceptance letter by tappping the image</string>
         <string name="enter_exam_score_here">Enter Exam Score here</string>
         <string name="submit">Submit</string>
+        <string name="hint_year">Enter year here</string>
         <string-array name="exam_type">
                 <item>Select Exam</item>
                 <item>GATE</item>
